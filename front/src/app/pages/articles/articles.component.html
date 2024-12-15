@@ -1,0 +1,45 @@
+<div class="articles-container">
+  <div class="header">
+    <button mat-raised-button color="primary" (click)="createArticle()">
+      Créer un article
+    </button>
+    <div class="sort">
+      <span>Trier par</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="sortBy('date')">Date</button>
+        <button mat-menu-item (click)="sortBy('title')">Titre</button>
+        <button mat-menu-item (click)="sortBy('theme')">Thème</button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="!loading; else loadingTpl">
+    <ng-container *ngIf="articles.length; else noArticles">
+      <div class="articles-grid">
+        <app-article-card
+          *ngFor="let article of articles"
+          [article]="article"
+        ></app-article-card>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #noArticles>
+  <div class="no-articles">
+    <mat-icon>article</mat-icon>
+    <p>Aucun article dans votre feed</p>
+    <button mat-raised-button color="primary" (click)="createArticle()">
+      Créer un article
+    </button>
+  </div>
+</ng-template>

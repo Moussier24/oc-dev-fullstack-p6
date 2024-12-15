@@ -1,0 +1,82 @@
+@import "../../../styles/breakpoints";
+
+.articles-container {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .sort {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 32px;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .article-card {
+      background-color: #f8f9fa;
+      border: none;
+
+      mat-card-header {
+        flex-direction: column;
+        margin-bottom: 16px;
+
+        mat-card-title {
+          margin-bottom: 8px;
+        }
+
+        .metadata {
+          display: flex;
+          justify-content: space-between;
+          color: rgba(0, 0, 0, 0.6);
+          font-size: 0.875rem;
+        }
+      }
+
+      mat-card-content {
+        color: rgba(0, 0, 0, 0.87);
+      }
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.no-articles {
+  text-align: center;
+  padding: 40px;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin-bottom: 24px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}

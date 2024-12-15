@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.service;
 
 import com.openclassrooms.mddapi.dto.UserLoginDto;
 import com.openclassrooms.mddapi.dto.UserRegistrationDto;
+import com.openclassrooms.mddapi.dto.UserUpdateDto;
 import com.openclassrooms.mddapi.model.User;
 
 public interface UserService {
@@ -11,7 +12,7 @@ public interface UserService {
 
     User getCurrentUser();
 
-    User updateUser(Long id, UserRegistrationDto userDto);
+    User updateUser(Long id, UserUpdateDto userDto);
 
     void validatePassword(String password);
 }

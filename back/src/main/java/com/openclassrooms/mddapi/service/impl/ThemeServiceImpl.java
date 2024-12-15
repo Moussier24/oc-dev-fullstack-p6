@@ -29,12 +29,14 @@ public class ThemeServiceImpl implements ThemeService {
     }
 
     private ThemeDto convertToDto(Theme theme) {
+        User currentUser = userService.getCurrentUser();
         ThemeDto dto = new ThemeDto();
         dto.setId(theme.getId());
         dto.setName(theme.getName());
         dto.setDescription(theme.getDescription());
         dto.setSubscribersCount(theme.getSubscribers() != null ? theme.getSubscribers().size() : 0);
         dto.setArticlesCount(theme.getArticles() != null ? theme.getArticles().size() : 0);
+        dto.setSubscribed(theme.getSubscribers().contains(currentUser));
         return dto;
     }
 

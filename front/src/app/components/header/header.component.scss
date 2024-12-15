@@ -1,0 +1,32 @@
+@import "../../../styles/breakpoints";
+
+mat-toolbar {
+  padding: 0 20px;
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  .logo {
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    a {
+      text-decoration: none;
+      color: rgba(0, 0, 0, 0.87);
+      font-size: 1rem;
+
+      &.active {
+        color: #673ab7;
+      }
+    }
+  }
+}

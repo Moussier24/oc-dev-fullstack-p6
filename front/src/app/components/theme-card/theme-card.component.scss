@@ -1,0 +1,13 @@
+.theme-card {
+  background-color: #f8f9fa;
+  border: none;
+  height: 100%;
+
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+
+  mat-card-content {
+    color: rgba(0, 0, 0, 0.87);
+  }
+}

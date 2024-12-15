@@ -18,4 +18,8 @@ public class ThemeDto {
     @Schema(name = "articles_count", example = "15")
     @JsonProperty("articles_count")
     private int articlesCount;
+
+    @Schema(name = "is_subscribed", example = "true", description = "Indique si l'utilisateur courant est abonné à ce thème")
+    @JsonProperty("is_subscribed")
+    private boolean isSubscribed;
 }

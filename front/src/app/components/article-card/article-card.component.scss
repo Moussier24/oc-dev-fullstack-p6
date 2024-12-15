@@ -1,0 +1,38 @@
+.article-card {
+  background-color: #f8f9fa;
+  border: none;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  mat-card-header {
+    flex-direction: column;
+    margin-bottom: 16px;
+
+    mat-card-title {
+      margin-bottom: 8px;
+    }
+
+    .mat-card-header-text {
+      margin: 0 !important;
+    }
+
+    .metadata {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(0, 0, 0, 0.6);
+      font-size: 0.875rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  mat-card-content {
+    color: rgba(0, 0, 0, 0.87);
+  }
+}

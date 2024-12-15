@@ -1,0 +1,62 @@
+<div class="article-create-container">
+  <h1>Créer un article</h1>
+
+  <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Titre</mat-label>
+      <input matInput formControlName="title" required />
+      <mat-error *ngIf="articleForm.get('title')?.hasError('required')">
+        Le titre est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Thème</mat-label>
+      <mat-select formControlName="theme_id" required>
+        <mat-option *ngFor="let theme of themes" [value]="theme.id">
+          {{ theme.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="articleForm.get('theme_id')?.hasError('required')">
+        Le thème est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Contenu</mat-label>
+      <textarea
+        matInput
+        formControlName="content"
+        required
+        rows="10"
+      ></textarea>
+      <mat-error *ngIf="articleForm.get('content')?.hasError('required')">
+        Le contenu est requis
+      </mat-error>
+    </mat-form-field>
+
+    <div class="error-message" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <div class="actions">
+      <button
+        mat-button
+        type="button"
+        [routerLink]="['/articles']"
+        [disabled]="loading"
+      >
+        Annuler
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!articleForm.valid || loading"
+      >
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        <span *ngIf="!loading">Créer</span>
+      </button>
+    </div>
+  </form>
+</div>

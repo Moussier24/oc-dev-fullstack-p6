@@ -1,0 +1,80 @@
+@import "../../../styles/breakpoints";
+
+.themes-container {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .themes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .theme-card {
+      background-color: #f8f9fa;
+      border: none;
+
+      mat-card-header {
+        margin-bottom: 16px;
+      }
+
+      .description {
+        margin-bottom: 16px;
+        color: rgba(0, 0, 0, 0.87);
+      }
+
+      .stats {
+        display: flex;
+        gap: 24px;
+        color: rgba(0, 0, 0, 0.6);
+
+        .stat {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.875rem;
+
+          mat-icon {
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+          }
+        }
+      }
+
+      mat-card-actions {
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.no-themes {
+  text-align: center;
+  padding: 40px;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}

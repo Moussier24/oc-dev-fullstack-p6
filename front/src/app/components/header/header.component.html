@@ -1,0 +1,11 @@
+<mat-toolbar>
+  <img src="/assets/logo_p6.png" alt="MDD" class="logo" routerLink="/" />
+  <div class="spacer"></div>
+  <nav>
+    <a mat-button routerLink="/articles" routerLinkActive="active">Articles</a>
+    <a mat-button routerLink="/themes" routerLinkActive="active">Thèmes</a>
+    <button mat-icon-button (click)="goToProfile()">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </nav>
+</mat-toolbar>

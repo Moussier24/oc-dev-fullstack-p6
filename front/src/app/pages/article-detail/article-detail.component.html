@@ -1,0 +1,69 @@
+<div class="article-detail-container">
+  <button mat-icon-button class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <ng-container *ngIf="!loading && article; else loadingTpl">
+    <article>
+      <h1>{{ article.title }}</h1>
+
+      <div class="metadata">
+        <span class="date">{{ article.created_at | date }}</span>
+        <span class="author">{{ article.author_username }}</span>
+        <span class="theme">{{ article.theme_name }}</span>
+      </div>
+
+      <div class="content">
+        {{ article.content }}
+      </div>
+
+      <hr />
+
+      <section class="comments">
+        <h2>Commentaires</h2>
+
+        <div class="comments-list">
+          <div *ngFor="let comment of comments" class="comment">
+            <div class="comment-header">
+              <span class="author">{{ comment.author_username }}</span>
+              <span class="date">{{ comment.created_at | date }}</span>
+            </div>
+            <p class="comment-content">{{ comment.content }}</p>
+          </div>
+        </div>
+
+        <form
+          [formGroup]="commentForm"
+          (ngSubmit)="onSubmit()"
+          class="comment-form"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Écrivez ici votre commentaire</mat-label>
+            <textarea
+              matInput
+              formControlName="content"
+              rows="3"
+              [disabled]="submitting"
+            ></textarea>
+          </mat-form-field>
+
+          <button
+            mat-fab
+            color="primary"
+            type="submit"
+            [disabled]="!commentForm.valid || submitting"
+            class="submit-button"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </form>
+      </section>
+    </article>
+  </ng-container>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
