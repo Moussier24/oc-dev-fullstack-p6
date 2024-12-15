@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(UserLoginDto loginDto) {
-        return userRepository.findByEmail(loginDto.getEmail())
+        return userRepository.findByEmailOrUsername(loginDto.getEmailOrUsername(), loginDto.getEmailOrUsername())
                 .filter(user -> passwordEncoder.matches(loginDto.getPassword(), user.getPassword()))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
     }
 
     @Override
