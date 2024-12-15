@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.dto.ThemeDto;
 import com.openclassrooms.mddapi.model.Theme;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.service.ThemeService;
@@ -26,7 +27,7 @@ public class ThemeController {
 
     @Operation(summary = "Récupérer tous les thèmes disponibles")
     @GetMapping
-    public ResponseEntity<List<Theme>> getAllThemes() {
+    public ResponseEntity<List<ThemeDto>> getAllThemes() {
         return ResponseEntity.ok(themeService.getAllThemes());
     }
 
@@ -44,5 +45,11 @@ public class ThemeController {
         User currentUser = userService.getCurrentUser();
         themeService.unsubscribeUserFromTheme(currentUser, themeId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Récupérer les thèmes auxquels l'utilisateur est abonné")
+    @GetMapping("/subscribed")
+    public ResponseEntity<List<ThemeDto>> getSubscribedThemes() {
+        return ResponseEntity.ok(themeService.getSubscribedThemes());
     }
 }

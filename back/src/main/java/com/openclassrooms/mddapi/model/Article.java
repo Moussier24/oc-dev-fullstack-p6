@@ -1,8 +1,9 @@
 package com.openclassrooms.mddapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,8 +11,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"author", "theme", "comments"})
+@ToString(exclude = {"author", "theme", "comments"})
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +31,7 @@ public class Article {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "theme_id", nullable = false)
     private Theme theme;
@@ -39,6 +41,6 @@ public class Article {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+       createdAt = LocalDateTime.now();
     }
 } 

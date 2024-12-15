@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.service.impl;
 
+import com.openclassrooms.mddapi.dto.AuthResponseDto;
+import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.dto.UserLoginDto;
 import com.openclassrooms.mddapi.dto.UserRegistrationDto;
 import com.openclassrooms.mddapi.model.User;
@@ -22,17 +24,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
 
     @Override
-    public String register(UserRegistrationDto request) {
+    public AuthResponseDto register(UserRegistrationDto request) {
         User user = userService.register(request);
-        return jwtService.generateToken(
+        String token = jwtService.generateToken(
                 new org.springframework.security.core.userdetails.User(
                         user.getEmail(),
                         user.getPassword(),
                         java.util.Collections.emptyList()));
+        return new AuthResponseDto(token, convertToDto(user));
     }
 
     @Override
-    public String login(UserLoginDto request) {
+    public AuthResponseDto login(UserLoginDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmailOrUsername(),
@@ -43,10 +46,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 request.getEmailOrUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
-        return jwtService.generateToken(
+        String token = jwtService.generateToken(
                 new org.springframework.security.core.userdetails.User(
                         user.getEmail(),
                         user.getPassword(),
                         java.util.Collections.emptyList()));
+
+        return new AuthResponseDto(token, convertToDto(user));
+    }
+
+    private UserDto convertToDto(User user) {
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setUsername(user.getUsername());
+        return dto;
     }
 }

@@ -7,6 +7,7 @@ import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-        // Cette méthode sera implémentée avec Spring Security
-        throw new UnsupportedOperationException("Not implemented yet");
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override

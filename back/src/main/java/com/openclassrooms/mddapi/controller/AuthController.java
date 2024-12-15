@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.dto.AuthResponseDto;
 import com.openclassrooms.mddapi.dto.UserLoginDto;
 import com.openclassrooms.mddapi.dto.UserRegistrationDto;
 import com.openclassrooms.mddapi.service.AuthenticationService;
@@ -20,13 +21,13 @@ public class AuthController {
 
     @Operation(summary = "Inscription d'un nouvel utilisateur")
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegistrationDto request) {
+    public ResponseEntity<AuthResponseDto> register(@RequestBody UserRegistrationDto request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
     @Operation(summary = "Connexion d'un utilisateur")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginDto request) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody UserLoginDto request) {
         return ResponseEntity.ok(authenticationService.login(request));
     }
 }

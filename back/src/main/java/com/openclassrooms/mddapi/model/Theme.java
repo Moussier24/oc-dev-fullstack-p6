@@ -1,16 +1,17 @@
 package com.openclassrooms.mddapi.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"subscribers", "articles"})
+@ToString(exclude = {"subscribers", "articles"})
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +26,7 @@ public class Theme {
     @ManyToMany(mappedBy = "subscribedThemes")
     private Set<User> subscribers;
 
-    @OneToMany(mappedBy = "theme")
+    @JsonManagedReference
+   @OneToMany(mappedBy = "theme")
     private Set<Article> articles;
 } 

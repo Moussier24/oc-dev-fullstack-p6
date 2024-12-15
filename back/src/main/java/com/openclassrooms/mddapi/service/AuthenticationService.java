@@ -1,10 +1,11 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.dto.AuthResponseDto;
 import com.openclassrooms.mddapi.dto.UserLoginDto;
 import com.openclassrooms.mddapi.dto.UserRegistrationDto;
 
 public interface AuthenticationService {
-    String register(UserRegistrationDto request);
+    AuthResponseDto register(UserRegistrationDto request);
 
-    String login(UserLoginDto request);
+    AuthResponseDto login(UserLoginDto request);
 }
