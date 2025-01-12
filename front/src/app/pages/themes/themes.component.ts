@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ThemeService, Theme } from '../../services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-themes',
   templateUrl: './themes.component.html',
   styleUrls: ['./themes.component.scss'],
 })
-export class ThemesComponent implements OnInit {
+export class ThemesComponent implements OnInit, OnDestroy {
   themes: Theme[] = [];
   loading = true;
   error = '';
+  private subscriptions: Subscription[] = [];
 
   constructor(private themeService: ThemeService) {}
 
@@ -17,8 +19,12 @@ export class ThemesComponent implements OnInit {
     this.loadThemes();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   loadThemes(): void {
-    this.themeService.getThemes().subscribe({
+    const sub = this.themeService.getThemes().subscribe({
       next: (themes) => {
         this.themes = themes;
         this.loading = false;
@@ -28,10 +34,11 @@ export class ThemesComponent implements OnInit {
         this.loading = false;
       },
     });
+    this.subscriptions.push(sub);
   }
 
   subscribe(theme: Theme): void {
-    this.themeService.subscribe(theme.id).subscribe({
+    const sub = this.themeService.subscribe(theme.id).subscribe({
       next: () => {
         const index = this.themes.findIndex((t) => t.id === theme.id);
         if (index !== -1) {
@@ -48,5 +55,6 @@ export class ThemesComponent implements OnInit {
         this.error = "Erreur lors de l'abonnement au thème";
       },
     });
+    this.subscriptions.push(sub);
   }
 }

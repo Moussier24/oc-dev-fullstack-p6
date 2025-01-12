@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArticleService, Article } from '../../services/article.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 type SortType = 'date' | 'title' | 'theme';
 
@@ -9,10 +10,11 @@ type SortType = 'date' | 'title' | 'theme';
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, OnDestroy {
   articles: Article[] = [];
   loading = true;
   error = '';
+  private feedSubscription?: Subscription;
 
   constructor(private articleService: ArticleService, private router: Router) {}
 
@@ -20,8 +22,14 @@ export class ArticlesComponent implements OnInit {
     this.loadArticles();
   }
 
+  ngOnDestroy(): void {
+    if (this.feedSubscription) {
+      this.feedSubscription.unsubscribe();
+    }
+  }
+
   loadArticles(): void {
-    this.articleService.getFeed().subscribe({
+    this.feedSubscription = this.articleService.getFeed().subscribe({
       next: (articles) => {
         this.articles = articles;
         this.loading = false;

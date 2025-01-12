@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 interface ErrorResponse {
   message: string;
@@ -13,9 +14,10 @@ interface ErrorResponse {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   registerForm: FormGroup;
   error: string = '';
+  private registerSubscription?: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +35,12 @@ export class RegisterComponent {
     );
   }
 
+  ngOnDestroy(): void {
+    if (this.registerSubscription) {
+      this.registerSubscription.unsubscribe();
+    }
+  }
+
   passwordMatchValidator(g: FormGroup) {
     return g.get('password')?.value === g.get('confirmPassword')?.value
       ? null
@@ -42,19 +50,21 @@ export class RegisterComponent {
   onSubmit(): void {
     if (this.registerForm.valid) {
       const { username, email, password } = this.registerForm.value;
-      this.authService.register(username, email, password).subscribe({
-        next: () => {
-          this.router.navigate(['/articles']);
-        },
-        error: (error: HttpErrorResponse) => {
-          if (error.error && error.error.message) {
-            this.error = error.error.message;
-          } else {
-            console.log(error);
-            this.error = "Une erreur est survenue lors de l'inscription";
-          }
-        },
-      });
+      this.registerSubscription = this.authService
+        .register(username, email, password)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/articles']);
+          },
+          error: (error: HttpErrorResponse) => {
+            if (error.error && error.error.message) {
+              this.error = error.error.message;
+            } else {
+              console.log(error);
+              this.error = "Une erreur est survenue lors de l'inscription";
+            }
+          },
+        });
     }
   }
 }

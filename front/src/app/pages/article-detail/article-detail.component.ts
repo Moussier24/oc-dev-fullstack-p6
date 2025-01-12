@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -6,20 +6,21 @@ import {
   Article,
   Comment,
 } from '../../services/article.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-article-detail',
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.scss'],
 })
-export class ArticleDetailComponent implements OnInit {
+export class ArticleDetailComponent implements OnInit, OnDestroy {
   article?: Article;
   comments: Comment[] = [];
   commentForm: FormGroup;
   loading = true;
   submitting = false;
   error = '';
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -42,8 +43,12 @@ export class ArticleDetailComponent implements OnInit {
     this.loadArticleAndComments(id);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   loadArticleAndComments(id: number): void {
-    forkJoin({
+    const sub = forkJoin({
       article: this.articleService.getArticle(id),
       comments: this.articleService.getArticleComments(id),
     }).subscribe({
@@ -57,12 +62,13 @@ export class ArticleDetailComponent implements OnInit {
         this.loading = false;
       },
     });
+    this.subscriptions.push(sub);
   }
 
   onSubmit(): void {
     if (this.commentForm.valid && this.article) {
       this.submitting = true;
-      this.articleService
+      const sub = this.articleService
         .addComment(this.article.id, this.commentForm.value.content)
         .subscribe({
           next: (comment) => {
@@ -75,6 +81,7 @@ export class ArticleDetailComponent implements OnInit {
             this.submitting = false;
           },
         });
+      this.subscriptions.push(sub);
     }
   }
 

@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   loginForm: FormGroup;
   error: string = '';
+  private loginSubscription?: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -24,21 +26,29 @@ export class LoginComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.loginSubscription) {
+      this.loginSubscription.unsubscribe();
+    }
+  }
+
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { identifier, password } = this.loginForm.value;
-      this.authService.login(identifier, password).subscribe({
-        next: () => {
-          this.router.navigate(['/articles']);
-        },
-        error: (error: HttpErrorResponse) => {
-          if (error.error && error.error.message) {
-            this.error = error.error.message;
-          } else {
-            this.error = 'Une erreur est survenue lors de la connexion';
-          }
-        },
-      });
+      this.loginSubscription = this.authService
+        .login(identifier, password)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/articles']);
+          },
+          error: (error: HttpErrorResponse) => {
+            if (error.error && error.error.message) {
+              this.error = error.error.message;
+            } else {
+              this.error = 'Une erreur est survenue lors de la connexion';
+            }
+          },
+        });
     }
   }
 }
