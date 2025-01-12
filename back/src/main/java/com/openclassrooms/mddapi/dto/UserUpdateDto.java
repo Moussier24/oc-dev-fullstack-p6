@@ -10,4 +10,4 @@ public class UserUpdateDto {
     private String email;
     private String username;
     private String password;
-} 
+}

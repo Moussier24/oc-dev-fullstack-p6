@@ -27,10 +27,6 @@ public class User {
     private String username;
 
     @ManyToMany
-    @JoinTable(
-        name = "user_themes",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "theme_id")
-    )
+    @JoinTable(name = "user_themes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "theme_id"))
     private Set<Theme> subscribedThemes;
-} 
+}

@@ -11,8 +11,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"author", "theme", "comments"})
-@ToString(exclude = {"author", "theme", "comments"})
+@EqualsAndHashCode(exclude = { "author", "theme", "comments" })
+@ToString(exclude = { "author", "theme", "comments" })
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +41,6 @@ public class Article {
 
     @PrePersist
     protected void onCreate() {
-       createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
     }
-} 
+}

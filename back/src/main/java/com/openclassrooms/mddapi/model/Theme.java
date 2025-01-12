@@ -10,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"subscribers", "articles"})
-@ToString(exclude = {"subscribers", "articles"})
+@EqualsAndHashCode(exclude = { "subscribers", "articles" })
+@ToString(exclude = { "subscribers", "articles" })
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,6 @@ public class Theme {
     private Set<User> subscribers;
 
     @JsonManagedReference
-   @OneToMany(mappedBy = "theme")
+    @OneToMany(mappedBy = "theme")
     private Set<Article> articles;
-} 
+}
